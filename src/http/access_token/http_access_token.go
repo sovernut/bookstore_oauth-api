@@ -30,7 +30,7 @@ func (h *accessTokenHandler) GetById(c *gin.Context) {
 		c.JSON(err.Status, err)
 		return
 	}
-	c.JSON(http.StatusNotImplemented, accessToken)
+	c.JSON(http.StatusOK, accessToken)
 }
 
 func (h *accessTokenHandler) Create(c *gin.Context) {
