@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/sovernut/bookstore_oauth-api/src/utils/crypto_utils"
-	errors "github.com/sovernut/bookstore_oauth-api/src/utils/error"
+	errors "github.com/sovernut/bookstore_utils-go/rest_errors"
 )
 
 const (

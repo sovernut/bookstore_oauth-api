@@ -4,7 +4,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/sovernut/bookstore_oauth-api/src/clients/cassandra"
 	"github.com/sovernut/bookstore_oauth-api/src/domain/access_token"
-	errors "github.com/sovernut/bookstore_oauth-api/src/utils/error"
+	errors "github.com/sovernut/bookstore_utils-go/rest_errors"
 )
 
 const (
@@ -39,7 +39,7 @@ func (r *dbRepository) GetById(accessTokenId string) (*access_token.AccessToken,
 			return nil, errors.NewNotFoundError("no access token with given id")
 
 		}
-		return nil, errors.NewInternalServerError(err.Error())
+		return nil, errors.NewInternalServerError("no access token with given id", err)
 	}
 	return &resultAccessToken, nil
 }
@@ -51,7 +51,7 @@ func (r *dbRepository) Create(at access_token.AccessToken) *errors.RestErr {
 		at.UserId,
 		at.ClientId,
 		at.Expires).Exec(); err != nil {
-		return errors.NewInternalServerError(err.Error())
+		return errors.NewInternalServerError("error while creating AccessToken", err)
 	}
 	return nil
 }
@@ -62,7 +62,7 @@ func (r *dbRepository) UpdateExpirationTime(at access_token.AccessToken) *errors
 		at.Expires,
 		at.AccessToken,
 	).Exec(); err != nil {
-		return errors.NewInternalServerError(err.Error())
+		return errors.NewInternalServerError("error while Updating ExpirationTime", err)
 	}
 	return nil
 }

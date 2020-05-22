@@ -6,7 +6,7 @@ import (
 	"github.com/sovernut/bookstore_oauth-api/src/domain/access_token"
 	"github.com/sovernut/bookstore_oauth-api/src/repository/db"
 	"github.com/sovernut/bookstore_oauth-api/src/repository/rest"
-	errors "github.com/sovernut/bookstore_oauth-api/src/utils/error"
+	errors "github.com/sovernut/bookstore_utils-go/rest_errors"
 )
 
 type Repository interface {

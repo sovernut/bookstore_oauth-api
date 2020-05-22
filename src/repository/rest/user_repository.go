@@ -6,9 +6,11 @@ import (
 
 	"encoding/json"
 
+	builtInError "errors"
+
 	"github.com/mercadolibre/golang-restclient/rest"
 	"github.com/sovernut/bookstore_oauth-api/src/domain/users"
-	errors "github.com/sovernut/bookstore_oauth-api/src/utils/error"
+	errors "github.com/sovernut/bookstore_utils-go/rest_errors"
 )
 
 var (
@@ -35,21 +37,21 @@ func (r *usersRepository) LoginUser(email, password string) (*users.User, *error
 	}
 	response := usersRestClient.Post("/users/login", request)
 	if response == nil || response.Response == nil {
-		return nil, errors.NewInternalServerError("invalid restclient response when trying to login")
+		return nil, errors.NewInternalServerError("invalid restclient response when trying to login", builtInError.New("post error"))
 	}
 	fmt.Println("Response > ", response)
 	if response.StatusCode > 299 {
 		var restErr errors.RestErr
 		err := json.Unmarshal(response.Bytes(), &restErr)
 		if err != nil {
-			return nil, errors.NewInternalServerError("invalid login credentials when trying to login")
+			return nil, errors.NewInternalServerError("invalid login credentials when trying to login", err)
 		}
 		return nil, &restErr
 	}
 
 	var user users.User
 	if err := json.Unmarshal(response.Bytes(), &user); err != nil {
-		return nil, errors.NewInternalServerError("error when trying to unmarshal user response")
+		return nil, errors.NewInternalServerError("error when trying to unmarshal user response", err)
 	}
 	return &user, nil
 }
